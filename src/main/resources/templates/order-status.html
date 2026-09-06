@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="'Order #' + ${order.id} + ' &mdash; ShopDrop'">Order</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <h1 class="page-title" th:text="'Order #' + ${order.id}">Order</h1>
+  <p class="status-badge" id="order-status" th:text="${order.status}">PLACED</p>
+
+  <ul class="timeline">
+    <li th:classappend="${order.status.name() == 'PLACED' or order.status.name() == 'PACKED' or order.status.name() == 'SHIPPED' or order.status.name() == 'DELIVERED'} ? 'done' : ''">Placed</li>
+    <li th:classappend="${order.status.name() == 'PACKED' or order.status.name() == 'SHIPPED' or order.status.name() == 'DELIVERED'} ? 'done' : ''">Packed</li>
+    <li th:classappend="${order.status.name() == 'SHIPPED' or order.status.name() == 'DELIVERED'} ? 'done' : ''">Shipped</li>
+    <li th:classappend="${order.status.name() == 'DELIVERED'} ? 'done' : ''">Delivered</li>
+  </ul>
+
+  <table class="summary-table">
+    <tr><td>Customer</td><td th:text="${order.customerName}">Name</td></tr>
+    <tr><td>Email</td><td th:text="${order.customerEmail}">Email</td></tr>
+    <tr><td>Subtotal</td><td th:text="'$' + ${#numbers.formatDecimal(order.subtotal, 1, 2)}">$0.00</td></tr>
+    <tr><td>Discount</td><td th:text="'-$' + ${#numbers.formatDecimal(order.discountAmount, 1, 2)}">-$0.00</td></tr>
+    <tr><td>Shipping</td><td th:text="'$' + ${#numbers.formatDecimal(order.shippingFee, 1, 2)}">$0.00</td></tr>
+    <tr class="total-row"><td>Total</td><td th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}">$0.00</td></tr>
+  </table>
+
+  <form th:if="${order.status.name() == 'PLACED' or order.status.name() == 'PACKED'}"
+        th:action="@{'/orders/' + ${order.id} + '/cancel'}" method="post" style="margin-top:16px;">
+    <button type="submit" class="btn btn-ghost" id="cancel-order-btn">Cancel order</button>
+  </form>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
