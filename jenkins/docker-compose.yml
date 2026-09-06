@@ -1,6 +1,8 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: shopdrop-jenkins
     privileged: true
     user: root
@@ -9,9 +11,6 @@ services:
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      # Mounting the host's Docker socket lets Jenkins run pipeline stages
-      # inside Docker agents (see the `agent { docker { ... } }` block in
-      # the Jenkinsfile) without installing Docker-in-Docker.
       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
