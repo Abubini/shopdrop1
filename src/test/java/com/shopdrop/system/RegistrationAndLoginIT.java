@@ -4,6 +4,10 @@ import com.shopdrop.system.pages.AccountPage;
 import com.shopdrop.system.pages.LoginPage;
 import com.shopdrop.system.pages.RegisterPage;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +21,9 @@ class RegistrationAndLoginIT extends BaseSystemTest {
                 .register("Selenium Tester", uniqueEmail, "password123", "password123");
 
         new LoginPage(driver).loginAs(uniqueEmail, "password123");
+
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlContains("/account"));
 
         new AccountPage(driver);
         assertTrue(driver.getCurrentUrl().endsWith("/account"),
@@ -35,6 +42,10 @@ class RegistrationAndLoginIT extends BaseSystemTest {
     @Test
     void loggingInWithWrongPassword_showsAnError() {
         new LoginPage(driver).open(baseUrl).loginAs("demo@shopdrop.com", "wrong-password");
+
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(LoginPage.ERROR));
+
         assertTrue(driver.findElement(LoginPage.ERROR).isDisplayed());
     }
 }
