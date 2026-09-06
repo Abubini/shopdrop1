@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Access Denied &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+<main class="container narrow">
+  <h1 class="page-title">Access denied</h1>
+  <p>You don't have permission to view that page.</p>
+  <a class="btn btn-primary" th:href="@{/products}">Back to products</a>
+</main>
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

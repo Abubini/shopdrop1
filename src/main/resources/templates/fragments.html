@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="header">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" id="brand-link" th:href="@{/products}">Shop<span>Drop</span></a>
+      <nav>
+        <a id="nav-products" th:href="@{/products}">Products</a>
+        <a id="nav-cart" sec:authorize="hasRole('USER')" th:href="@{/cart}">Cart</a>
+        <a id="nav-account" sec:authorize="isAuthenticated()" th:href="@{/account}">Account</a>
+        <a id="nav-admin-dashboard" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Dashboard</a>
+        <a id="nav-admin-products" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/products}">Manage Products</a>
+        <a id="nav-admin-orders" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/orders}">Admin Orders</a>
+        <a id="nav-login" sec:authorize="!isAuthenticated()" th:href="@{/login}">Log in</a>
+        <a id="nav-register" sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+          <button type="submit" class="nav-link-button" id="nav-logout">Log out</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<div th:fragment="footer">
+  <footer class="site-footer">
+    <div class="container">
+      <p>ShopDrop &mdash; built for Software Testing &amp; Validation</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

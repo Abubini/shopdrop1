@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <h1 class="page-title">Log in</h1>
+
+  <p class="form-message error" th:if="${param.error}" id="login-error">Incorrect email or password.</p>
+  <p class="form-message success" th:if="${param.registered}" id="registered-message">Account created &mdash; log in below.</p>
+  <p class="form-message success" th:if="${param.loggedout}" id="loggedout-message">You've been logged out.</p>
+
+  <form th:action="@{/login}" method="post" class="checkout-form" id="login-form">
+    <label for="email">Email</label>
+    <input id="email" type="email" name="username" required autofocus>
+
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" required>
+
+    <button type="submit" class="btn btn-primary" id="login-btn" style="margin-top:16px;">Log in</button>
+  </form>
+
+  <p class="muted" style="margin-top:16px;">
+    No account yet? <a th:href="@{/register}" id="go-to-register">Register</a>
+  </p>
+  <p class="muted" style="margin-top:8px; font-size:0.8rem;">
+    Admin demo login: admin@shopdrop.com / admin123
+  </p>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

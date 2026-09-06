@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Account &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <h1 class="page-title">My Account</h1>
+
+  <table class="summary-table">
+    <tr><td>Name</td><td id="account-name" th:text="${user.name}">Name</td></tr>
+    <tr><td>Email</td><td id="account-email" th:text="${user.email}">Email</td></tr>
+    <tr><td>Role</td><td id="account-role" th:text="${user.role}">USER</td></tr>
+    <tr><td>Membership</td>
+        <td id="membership-status" th:text="${user.member} ? 'Active' : 'Not a member'">Not a member</td></tr>
+  </table>
+
+  <form th:action="@{/account/membership}" method="post" style="margin-top:16px;">
+    <input type="hidden" name="member" th:value="${!user.member}">
+    <button type="submit" class="btn btn-small" id="toggle-membership-btn"
+            th:text="${user.member} ? 'Cancel membership' : 'Join membership'">Join membership</button>
+  </form>
+
+  <h2 class="page-title" style="font-size:1.1rem; margin-top:32px;">Order history</h2>
+
+  <div th:if="${#lists.isEmpty(orders)}" class="empty-state" id="no-orders">
+    <p>You haven't placed any orders yet.</p>
+    <a class="btn btn-primary" th:href="@{/products}">Browse products</a>
+  </div>
+
+  <table class="cart-table" th:unless="${#lists.isEmpty(orders)}" id="account-orders-table">
+    <thead><tr><th>Order</th><th>Status</th><th>Total</th><th></th></tr></thead>
+    <tbody>
+      <tr th:each="order : ${orders}">
+        <td th:text="'#' + ${order.id}">#1</td>
+        <td><span class="status-badge" th:text="${order.status}">PLACED</span></td>
+        <td th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}">$0.00</td>
+        <td><a th:href="@{'/orders/' + ${order.id}}">View</a></td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

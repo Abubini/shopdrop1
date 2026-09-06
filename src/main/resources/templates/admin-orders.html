@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin &mdash; Orders &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <h1 class="page-title">Admin: Orders</h1>
+
+  <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
+    <p>No orders yet.</p>
+  </div>
+
+  <table class="cart-table" th:unless="${#lists.isEmpty(orders)}" id="admin-orders-table">
+    <thead>
+      <tr><th>ID</th><th>Customer</th><th>Status</th><th>Total</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="order : ${orders}" th:attr="data-testid='admin-order-row-' + ${order.id}">
+        <td th:text="${order.id}">1</td>
+        <td th:text="${order.customerName}">Name</td>
+        <td><span class="status-badge" th:text="${order.status}">PLACED</span></td>
+        <td th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}">$0.00</td>
+        <td class="action-cell">
+          <form th:if="${order.status.name() != 'DELIVERED' and order.status.name() != 'CANCELLED'}"
+                th:action="@{'/admin/orders/' + ${order.id} + '/advance'}" method="post">
+            <button type="submit" class="btn btn-small" th:attr="id='advance-btn-' + ${order.id}">Advance</button>
+          </form>
+          <form th:if="${order.status.name() == 'PLACED' or order.status.name() == 'PACKED'}"
+                th:action="@{'/admin/orders/' + ${order.id} + '/cancel'}" method="post">
+            <button type="submit" class="btn btn-small btn-ghost" th:attr="id='cancel-btn-' + ${order.id}">Cancel</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

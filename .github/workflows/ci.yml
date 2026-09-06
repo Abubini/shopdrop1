@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      # Unit tests (src/test/.../service) and MockMvc integration tests
+      # (src/test/.../integration) both run here via Surefire; JaCoCo's
+      # branch-coverage check (>= 80% on the service package) is bound to
+      # this same `test` phase, so a coverage regression fails the build.
+      - name: Unit + integration tests, coverage check
+        run: mvn -B test
+
+      # Selenium system tests (src/test/.../system, *IT.java) run here via
+      # Failsafe. GitHub's ubuntu-latest runners ship Google Chrome, and
+      # Selenium 4.6+'s built-in Selenium Manager downloads a matching
+      # chromedriver automatically - no extra setup step needed.
+      - name: Selenium system tests
+        run: mvn -B verify
+
+      - name: Upload JaCoCo coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-coverage-report
+          path: target/site/jacoco
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            target/surefire-reports
+            target/failsafe-reports

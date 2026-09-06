@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container">
+  <h1 class="page-title">Admin Dashboard</h1>
+
+  <div class="stats-grid" id="dashboard-stats">
+    <div class="stat-card">
+      <p class="stat-value" id="stat-total-products" th:text="${stats.totalProducts}">0</p>
+      <p class="stat-label">Products</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-value" id="stat-total-users" th:text="${stats.totalUsers}">0</p>
+      <p class="stat-label">Registered users</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-value" id="stat-total-orders" th:text="${stats.totalOrders}">0</p>
+      <p class="stat-label">Orders</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-value" id="stat-total-revenue" th:text="'$' + ${#numbers.formatDecimal(stats.totalRevenue, 1, 2)}">$0.00</p>
+      <p class="stat-label">Revenue (delivered)</p>
+    </div>
+  </div>
+
+  <h2 class="page-title" style="font-size:1.1rem; margin-top:32px;">Orders by status</h2>
+  <table class="summary-table" id="orders-by-status-table">
+    <tr th:each="entry : ${stats.ordersByStatus}">
+      <td th:text="${entry.key}">PLACED</td>
+      <td th:text="${entry.value}">0</td>
+    </tr>
+  </table>
+
+  <div style="margin-top:24px; display:flex; gap:12px;">
+    <a class="btn btn-primary" th:href="@{/admin/products}">Manage Products</a>
+    <a class="btn btn-small" th:href="@{/admin/orders}">Manage Orders</a>
+  </div>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

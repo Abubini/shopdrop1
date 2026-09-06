@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${product.name} + ' &mdash; ShopDrop'">Product</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <a class="back-link" th:href="@{/products}">&larr; Back to products</a>
+
+  <div class="detail-card">
+    <div class="product-icon large" th:text="${product.icon}">&#128230;</div>
+    <h1 th:text="${product.name}">Name</h1>
+    <p class="muted" th:text="${product.category.name}">Category</p>
+    <p th:text="${product.description}">Description</p>
+    <p class="price large" th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">$0.00</p>
+
+    <p class="muted" id="rating-summary">
+      <span th:if="${#lists.isEmpty(reviews)}">No reviews yet</span>
+      <span th:unless="${#lists.isEmpty(reviews)}"
+            th:text="${#numbers.formatDecimal(averageRating, 1, 1)} + ' / 5 (' + ${#lists.size(reviews)} + ' review' + (${#lists.size(reviews)} > 1 ? 's' : '') + ')'">
+        4.0 / 5 (2 reviews)
+      </span>
+    </p>
+
+    <p class="muted" id="stock-status"
+       th:text="${product.stockQuantity > 0} ? (${product.stockQuantity} + ' in stock') : 'Out of stock'">
+      10 in stock
+    </p>
+
+    <form th:if="${product.stockQuantity > 0}" sec:authorize="!hasRole('ADMIN')"
+          th:action="@{/cart/add}" method="post" class="inline-form" id="add-to-cart-form">
+      <input type="hidden" name="productId" th:value="${product.id}">
+      <label for="quantity" style="margin:0;">Qty</label>
+      <input id="quantity" type="number" name="quantity" value="1" min="1" th:attr="max=${product.stockQuantity}">
+      <button type="submit" class="btn btn-primary" id="add-to-cart-btn">Add to cart</button>
+    </form>
+
+    <p class="muted" th:if="${product.stockQuantity <= 0}" id="out-of-stock-message">
+      This item is currently out of stock.
+    </p>
+    <p class="muted" sec:authorize="hasRole('ADMIN')" id="admin-shopping-note">
+      Admin accounts can't add items to a cart.
+    </p>
+  </div>
+
+  <section class="reviews-section">
+    <h2 class="page-title" style="font-size:1.1rem;">Reviews</h2>
+
+    <div th:if="${#lists.isEmpty(reviews)}" class="empty-state">
+      <p>Be the first to review this product.</p>
+    </div>
+
+    <ul class="review-list" th:unless="${#lists.isEmpty(reviews)}" id="review-list">
+      <li class="review-item" th:each="review : ${reviews}">
+        <strong th:text="${review.rating} + '/5'">5/5</strong>
+        &mdash; <span th:text="${review.user.name}">Name</span>
+        <p th:text="${review.comment}">Comment</p>
+      </li>
+    </ul>
+
+    <div sec:authorize="isAuthenticated()">
+      <form th:if="${canReview}" th:action="@{'/products/' + ${product.id} + '/reviews'}" method="post"
+            class="checkout-form" id="review-form">
+        <label for="review-rating">Rating</label>
+        <select id="review-rating" name="rating" required>
+          <option value="5">5 - Excellent</option>
+          <option value="4">4 - Good</option>
+          <option value="3">3 - Average</option>
+          <option value="2">2 - Poor</option>
+          <option value="1">1 - Terrible</option>
+        </select>
+
+        <label for="review-comment">Comment</label>
+        <textarea id="review-comment" name="comment" rows="3"></textarea>
+
+        <button type="submit" class="btn btn-primary" id="submit-review-btn" style="margin-top:12px;">Submit review</button>
+      </form>
+
+      <p class="muted" th:if="${alreadyReviewed}" id="already-reviewed-message">
+        You've already reviewed this product.
+      </p>
+      <p class="muted" th:if="${!canReview and !alreadyReviewed}" id="cannot-review-message">
+        You can review this product once an order for it has been delivered to you.
+      </p>
+    </div>
+  </section>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

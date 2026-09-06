@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <h1 class="page-title">Create your account</h1>
+
+  <p class="form-message error" th:if="${error}" th:text="${error}" id="register-error">Error</p>
+
+  <form th:action="@{/register}" method="post" class="checkout-form" id="register-form">
+    <label for="name">Full name</label>
+    <input id="name" type="text" name="name" th:value="${name}" required>
+
+    <label for="email">Email</label>
+    <input id="email" type="email" name="email" th:value="${email}" required>
+
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" required minlength="6">
+
+    <label for="confirmPassword">Confirm password</label>
+    <input id="confirmPassword" type="password" name="confirmPassword" required minlength="6">
+
+    <button type="submit" class="btn btn-primary" id="register-btn" style="margin-top:16px;">Create account</button>
+  </form>
+
+  <p class="muted" style="margin-top:16px;">
+    Already have an account? <a th:href="@{/login}" id="go-to-login">Log in</a>
+  </p>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

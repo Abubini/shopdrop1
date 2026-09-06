@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <h1 class="page-title">Something went wrong</h1>
+  <p id="error-message" th:text="${message}">Error message</p>
+  <a class="btn btn-primary" th:href="@{/products}">Back to products</a>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

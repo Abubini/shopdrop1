@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout &mdash; ShopDrop</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: header}"></div>
+
+<main class="container narrow">
+  <h1 class="page-title">Checkout</h1>
+
+  <p class="muted" id="membership-note">
+    Membership status:
+    <strong th:text="${member} ? 'Member (extra discount applied)' : 'Not a member'">Not a member</strong>
+    &mdash; <a th:href="@{/account}">manage in your account</a>
+  </p>
+
+  <table class="summary-table" id="checkout-summary">
+    <tr><td>Subtotal</td><td id="summary-subtotal" th:text="'$' + ${#numbers.formatDecimal(subtotal, 1, 2)}">$0.00</td></tr>
+    <tr><td>Discount</td><td id="summary-discount" th:text="'-$' + ${#numbers.formatDecimal(discount, 1, 2)}">-$0.00</td></tr>
+    <tr><td>Shipping</td><td id="summary-shipping" th:text="'$' + ${#numbers.formatDecimal(shipping, 1, 2)}">$0.00</td></tr>
+    <tr class="total-row"><td>Total</td><td id="summary-total" th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">$0.00</td></tr>
+  </table>
+
+  <form th:action="@{/checkout/place}" method="post" class="checkout-form" id="place-order-form">
+    <p class="muted">Placing this order as <strong th:text="${#authentication.name}">you</strong>.</p>
+    <button type="submit" class="btn btn-primary" id="place-order-btn">Place order</button>
+  </form>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
