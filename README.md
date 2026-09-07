@@ -9,8 +9,8 @@
 
 <p align="center">
   <!-- Replace <your-username>/<your-repo> below with your actual GitHub path once pushed -->
-  <a href="https://github.com/<your-username>/<your-repo>/actions/workflows/ci.yml">
-    <img src="https://github.com/<your-username>/<your-repo>/actions/workflows/ci.yml/badge.svg" alt="CI status">
+  <a href="https://github.com/abubini/shopdrop/actions/workflows/ci.yml">
+    <img src="https://github.com/abubini/shopdrop/actions/workflows/ci.yml/badge.svg" alt="CI status">
   </a>
 </p>
 
