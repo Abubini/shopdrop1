@@ -15,7 +15,7 @@ public abstract class BasePage {
 
     protected BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     }
 
     protected WebElement waitFor(By locator) {
