@@ -14,7 +14,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.springframework.transaction.annotation.Transactional;
 /**
  * Order placement and the order state machine.
  *
@@ -94,12 +94,14 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    @Transactional
     public Order transition(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
         return transition(order, newStatus);
     }
 
+    @Transactional
     public Order transition(Order order, OrderStatus newStatus) {
         OrderStatus current = order.getStatus();
         Set<OrderStatus> allowed = ALLOWED_TRANSITIONS.getOrDefault(current, EnumSet.noneOf(OrderStatus.class));
@@ -121,12 +123,14 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    @Transactional
     public Order advance(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
         return transition(order, nextStatus(order.getStatus()));
     }
 
+    @Transactional
     public Order cancel(Long orderId) {
         return transition(orderId, OrderStatus.CANCELLED);
     }

@@ -1,3 +1,4 @@
+// src/test/java/com/shopdrop/system/pages/AdminProductsPage.java
 package com.shopdrop.system.pages;
 
 import org.openqa.selenium.By;
@@ -31,5 +32,7 @@ public class AdminProductsPage extends BasePage {
 
     public void deleteProduct(Long productId) {
         click(By.id("delete-btn-" + productId));
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
     }
 }

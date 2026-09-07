@@ -2,6 +2,8 @@ package com.shopdrop.system.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class OrderStatusPage extends BasePage {
 
@@ -17,6 +19,8 @@ public class OrderStatusPage extends BasePage {
     }
 
     public void cancelOrder() {
+        WebElement previousStatus = driver.findElement(STATUS);
         click(CANCEL_BTN);
+        wait.until(ExpectedConditions.stalenessOf(previousStatus));
     }
 }
