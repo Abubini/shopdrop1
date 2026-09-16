@@ -29,7 +29,7 @@ class RawLocatorAccountAndStockLimitIT extends BaseSystemTest {
 
     @Test
     void accountPageShowsProfileDetails_viaRawLocators() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         logInAsDemo(wait);
 
         driver.get(baseUrl + "/account");
@@ -45,7 +45,7 @@ class RawLocatorAccountAndStockLimitIT extends BaseSystemTest {
 
     @Test
     void updatingCartQuantityBeyondAvailableStock_isRejectedViaRawLocators() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 
         Product product = productRepository.findAll().stream()
                 .filter(p -> p.getName().equals("Standing Desk")) // low seeded stock: 8

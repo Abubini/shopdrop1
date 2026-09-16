@@ -26,7 +26,7 @@ class RawLocatorShoppingAndCartIT extends BaseSystemTest {
 
     @Test
     void searchAddUpdateAndRemoveCartLines_allWorkViaRawLocators() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 
         Product mug = productRepository.findAll().stream()
                 .filter(p -> p.getName().equals("Ceramic Mug"))

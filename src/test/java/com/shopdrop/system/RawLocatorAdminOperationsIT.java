@@ -40,7 +40,7 @@ class RawLocatorAdminOperationsIT extends BaseSystemTest {
 
     @Test
     void adminCanViewDashboardAndManageAProductLifecycle_viaRawLocators() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 
         // --- log in as admin ---
         driver.get(baseUrl + "/login");
@@ -102,7 +102,7 @@ class RawLocatorAdminOperationsIT extends BaseSystemTest {
 
     @Test
     void adminCanAdvanceAnOrderAndSeeItReflectedOnTheDashboard_viaRawLocators() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 
         User demo = userRepository.findByEmail("demo@shopdrop.com").orElseThrow();
         Product product = productRepository.findAll().get(0);

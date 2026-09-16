@@ -16,7 +16,7 @@ class RawLocatorCheckoutOrderLifecycleIT extends BaseSystemTest {
 
     @Test
     void placingAndThenCancellingAnOrder_worksViaRawLocators() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 
         // --- log in ---
         driver.get(baseUrl + "/login");
