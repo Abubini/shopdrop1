@@ -37,6 +37,7 @@ the application, its unit/integration/system tests, and CI/CD pipelines all live
 | Estifanos Yitayew | ATE/9512/14 |
 | Yeabsira Addis | ATE/8574/14 |
 | Yosef Ashebir | ATE/4638/14 |
+| Simon Mesfin | ATE/4600/14 |
 
 ---
 
